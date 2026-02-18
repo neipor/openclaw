@@ -139,7 +139,7 @@ describe("gateway server chat", () => {
 
   test("chat.send does not force-disable block streaming", async () => {
     await withGatewayChatHarness(async ({ ws, createSessionDir }) => {
-      const spy = vi.mocked(getReplyFromConfig) as unknown as ReturnType<typeof vi.fn>;
+      const spy = getReplyFromConfig;
       await connectOk(ws);
 
       await createSessionDir();
@@ -288,7 +288,7 @@ describe("gateway server chat", () => {
 
   test("smoke: supports abort and idempotent completion", async () => {
     await withGatewayChatHarness(async ({ ws, createSessionDir }) => {
-      const spy = vi.mocked(getReplyFromConfig) as unknown as ReturnType<typeof vi.fn>;
+      const spy = getReplyFromConfig;
       let aborted = false;
       await connectOk(ws);
 
