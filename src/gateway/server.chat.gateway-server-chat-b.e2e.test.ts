@@ -138,7 +138,7 @@ describe("gateway server chat", () => {
 
   test("chat.send does not force-disable block streaming", async () => {
     await withGatewayChatHarness(async ({ ws, createSessionDir }) => {
-      const spy = vi.mocked(getReplyFromConfig) as unknown as ReturnType<typeof vi.fn>;
+      const spy = vi.mocked(getReplyFromConfig);
       await connectOk(ws);
 
       await createSessionDir();
@@ -146,9 +146,9 @@ describe("gateway server chat", () => {
       testState.agentConfig = { blockStreamingDefault: "on" };
       try {
         spy.mockReset();
-        let capturedOpts: Record<string, unknown> | undefined;
+        let capturedOpts: Parameters<typeof getReplyFromConfig>[1];
         spy.mockImplementationOnce(async (_ctx, opts) => {
-          capturedOpts = opts as Record<string, unknown> | undefined;
+          capturedOpts = opts;
         });
 
         const sendRes = await rpcReq(ws, "chat.send", {
