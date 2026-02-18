@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, test, vi } from "vitest";
+import type { GetReplyOptions } from "../auto-reply/types.js";
 import { __setMaxChatHistoryMessagesBytesForTest } from "./server-constants.js";
 import {
   connectOk,
@@ -138,7 +139,7 @@ describe("gateway server chat", () => {
 
   test("chat.send does not force-disable block streaming", async () => {
     await withGatewayChatHarness(async ({ ws, createSessionDir }) => {
-      const spy = vi.mocked(getReplyFromConfig);
+      const spy = vi.mocked(getReplyFromConfig) as unknown as ReturnType<typeof vi.fn>;
       await connectOk(ws);
 
       await createSessionDir();
@@ -146,8 +147,8 @@ describe("gateway server chat", () => {
       testState.agentConfig = { blockStreamingDefault: "on" };
       try {
         spy.mockReset();
-        let capturedOpts: Parameters<typeof getReplyFromConfig>[1];
-        spy.mockImplementationOnce(async (_ctx, opts) => {
+        let capturedOpts: GetReplyOptions | undefined;
+        spy.mockImplementationOnce(async (_ctx: unknown, opts?: GetReplyOptions) => {
           capturedOpts = opts;
         });
 
