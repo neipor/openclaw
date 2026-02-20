@@ -622,10 +622,14 @@ export function renderApp(state: AppViewState) {
                       "id" in entry &&
                       (entry as { id?: string }).id === agentId,
                   );
-                  // For default agent not in list, update agents.defaults.model
+                  // For default agent not in list, update agents.defaults.model.primary
                   if (index < 0) {
                     if (modelId) {
-                      updateConfigFormValue(state, ["agents", "defaults", "model"], modelId);
+                      updateConfigFormValue(
+                        state,
+                        ["agents", "defaults", "model", "primary"],
+                        modelId,
+                      );
                     }
                     return;
                   }
